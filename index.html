@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Workflow Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+        
+        /* Custom Tree CSS - Implementing connections without SVG */
+        .tree-node {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Vertical line from bottom of node */
+        .tree-node::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; /* Length of connection */
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #CBD5E1;
+            z-index: 0;
+        }
+        
+        /* Remove line from last level */
+        .tree-leaf::after { display: none; }
+
+        /* Container for children */
+        .tree-children {
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            position: relative;
+        }
+
+        /* Horizontal connector line above children */
+        .tree-children::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%; /* Adjusts based on width of children */
+            height: 2px;
+            background-color: #CBD5E1;
+        }
+        
+        /* Fix for single child: remove horizontal bar */
+        .tree-children.single-child::before { width: 0; }
+
+        /* Individual child wrapper to create vertical lines up to the horizontal bar */
+        .tree-child-wrapper {
+            position: relative;
+            padding: 0 10px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tree-child-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -20px; /* Connects to horizontal bar */
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #CBD5E1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Flow CSS for Vertical Timeline */
+        .flow-step {
+            position: relative;
+            padding-left: 1.5rem; /* Space for the line and dot */
+        }
+        .flow-connector {
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #CBD5E1;
+        }
+        .flow-dot {
+            position: absolute;
+            left: 0.25rem;
+            top: 1rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4F46E5;
+            z-index: 10;
+        }
+
+        /* Bug/Defect Flow Styling */
+        .bug-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .bug-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 2.5rem;
+            height: 100%;
+            width: 2px;
+            background-color: #CBD5E1;
+        }
+        .bug-icon {
+            flex-shrink: 0;
+            margin-right: 1rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #F59E0B; /* Amber */
+            z-index: 10;
+        }
+        .bug-content {
+            padding-top: 0.25rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <header class="w-full bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">
+                    Project <span class="gradient-text">Workflow Ecosystem</span>
+                </h1>
+                <p class="mt-2 text-sm text-slate-500">Breakdown of Lifecycle, Roles, and Task Dependencies</p>
+            </div>
+            <div class="hidden md:block">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                    Live Data Preview
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- Section 1: Introduction -->
+        <section class="text-center max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">From Concept to Code</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Successful software delivery relies on a structured decomposition of work. 
+                This infographic visualizes the flow from high-level Project objectives, 
+                down to specific User Stories, and finally into specialized Technical Tasks distributed across Design, Frontend, and Backend roles.
+            </p>
+        </section>
+
+        <!-- Section 2: The Tree Flow Chart (Hierarchical Breakdown) -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-indigo-600 pl-3">Hierarchical Breakdown</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">Visualizing parent-child relationships in the workflow.</p>
+                </div>
+            </div>
+
+            <div class="w-full overflow-x-auto pb-12">
+                <div class="min-w-[800px] flex flex-col items-center">
+                    <!-- Level 1: Project -->
+                    <div class="tree-node">
+                        <div class="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-bold text-lg z-10 text-center w-64 border-2 border-indigo-500">
+                            PROJECT NAME
+                        </div>
+                    </div>
+
+                    <!-- Level 2: Stories -->
+                    <div class="tree-children w-full flex justify-center gap-0 single-child"> 
+                        <div class="tree-child-wrapper">
+                            <div class="tree-node">
+                                <div class="bg-white border-2 border-cyan-500 text-cyan-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-52 z-10 relative">
+                                    <span class="absolute -top-3 left-4 bg-cyan-100 text-cyan-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: Story</span>
+                                    Story Tickets
+                                </div>
+                            </div>
+                            
+                            <!-- Level 3: Full Stack Task -->
+                            <div class="tree-children single-child">
+                                <div class="tree-child-wrapper">
+                                    <div class="tree-node">
+                                        <div class="bg-white border-2 border-indigo-500 text-indigo-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-52 z-10 relative">
+                                            <span class="absolute -top-3 left-4 bg-indigo-100 text-indigo-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: Task</span>
+                                            Full Stack Task
+                                        </div>
+                                    </div>
+
+                                    <!-- Level 4: Specialized Roles (The "Coming out" nodes) -->
+                                    <div class="tree-children gap-4">
+                                        <!-- Design -->
+                                        <div class="tree-child-wrapper tree-leaf">
+                                            <div class="bg-white border-2 border-pink-500 text-pink-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-36 text-xs relative">
+                                                <span class="absolute -top-3 left-2 bg-pink-100 text-pink-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: Design</span>
+                                                Design Task
+                                            </div>
+                                        </div>
+                                        <!-- UI Dev -->
+                                        <div class="tree-child-wrapper tree-leaf">
+                                            <div class="bg-white border-2 border-blue-500 text-blue-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-36 text-xs relative">
+                                                <span class="absolute -top-3 left-2 bg-blue-100 text-blue-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: UI Dev</span>
+                                                UI Dev Task
+                                            </div>
+                                        </div>
+                                        <!-- Back End Dev -->
+                                        <div class="tree-child-wrapper tree-leaf">
+                                            <div class="bg-white border-2 border-emerald-500 text-emerald-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-36 text-xs relative">
+                                                <span class="absolute -top-3 left-2 bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: Back End</span>
+                                                Back End Dev Task
+                                            </div>
+                                        </div>
+                                        <!-- AI Task (Restored) -->
+                                        <div class="tree-child-wrapper tree-leaf">
+                                            <div class="bg-white border-2 border-purple-500 text-purple-700 px-4 py-3 rounded-lg shadow-md font-semibold text-center w-36 text-xs relative">
+                                                <span class="absolute -top-3 left-2 bg-purple-100 text-purple-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide">label: AI Task</span>
+                                                AI Task
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 space-y-3 max-w-lg mx-auto">
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md shadow-sm">
+                    <p class="text-sm text-amber-900 font-medium mb-2">
+                        <span class="font-bold">Important Note:</span> All team leads are instructed to add a due date for all the tickets according to the completed status of the tickets.
+                    </p>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md shadow-sm">
+                    <p class="text-sm text-red-900 font-medium">
+                        <span class="font-bold">Warning:</span> If something is not supposed to go to production, make sure you are feature flagging that part of work.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Story Status Lifecycle -->
+        <section class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-cyan-600 pl-3">Story Status Lifecycle</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">Detailed lifecycle stages from idea to production deployment.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <div class="relative max-w-lg mx-auto">
+                    <div class="flow-connector"></div>
+                    <div class="space-y-6">
+                        <div class="flow-step">
+                            <div class="flow-dot bg-indigo-600"></div>
+                            <h4 class="font-bold text-slate-800">Draft</h4>
+                            <p class="text-sm text-slate-500">Story created by Product/Team Lead, detailing initial requirements.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-indigo-600"></div>
+                            <h4 class="font-bold text-slate-800">Pending Story Approval</h4>
+                            <p class="text-sm text-slate-500">Awaiting sign-off from key stakeholders (e.g., VP, CPO, CTO, CEO). </p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-indigo-600"></div>
+                            <h4 class="font-bold text-slate-800">Approved</h4>
+                            <p class="text-sm text-slate-500">Story is prioritized and ready for technical breakdown and assignment.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-cyan-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending UX Design</h4>
+                            <p class="text-sm text-slate-500">Ready to enter the design queue.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-pink-500"></div>
+                            <h4 class="font-bold text-slate-800">In UX Design</h4>
+                            <p class="text-sm text-slate-500">The Design team is actively creating mockups and flows.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-cyan-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending UX Approval</h4>
+                            <p class="text-sm text-slate-500">Designs are awaiting for sign off from stakeholder.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending Dev</h4>
+                            <p class="text-sm text-slate-500">Design Handed over; Task is broken down, estimated, and waiting for a developer to pick it up.</p>
+                        </div>
+                        <div class="flow-step relative z-20" id="dev-in-progress">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">Dev in Progress</h4>
+                            <p class="text-sm text-slate-500">Development team is coding the full-stack task and all sub-tasks.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">PR in Review</h4>
+                            <p class="text-sm text-slate-500">Code is complete and waiting for peer review by a fellow developer/lead.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">PR approved</h4>
+                            <p class="text-sm text-slate-500">Code review complete; ready to merge to the main integration branch.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">In Dev env</h4>
+                            <p class="text-sm text-slate-500">Code deployed to the development environment for initial testing.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-purple-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending QA</h4>
+                            <p class="text-sm text-slate-500">Code deployed to QA environment and ready to be picked up by the Quality Assurance team.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-purple-500"></div>
+                            <h4 class="font-bold text-slate-800">QA in Progress</h4>
+                            <p class="text-sm text-slate-500">The QA team is actively testing the feature against acceptance criteria.</p>
+                        </div>
+                        <div class="flow-step relative">
+                            <div class="flow-dot"></div>
+                            <div class="grid grid-cols-2 gap-2 text-sm font-medium">
+                                <div class="bg-green-100 text-green-700 p-2 rounded-lg text-center border border-green-300">QA Passed</div>
+                                <div class="bg-red-100 text-red-700 p-2 rounded-lg text-center border border-red-300">QA Failed > Rework</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-yellow-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending BV - Stage</h4>
+                            <p class="text-sm text-slate-500">QA passed; Deployed to the staging environment for business validation.</p>
+                        </div>
+                        <div class="flow-step relative">
+                            <div class="flow-dot"></div>
+                            <div class="grid grid-cols-2 gap-2 text-sm font-medium">
+                                <div class="bg-green-100 text-green-700 p-2 rounded-lg text-center border border-green-300">BV Passed</div>
+                                <div class="bg-red-100 text-red-700 p-2 rounded-lg text-center border border-red-300">BV Failed > Rework</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-red-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending Prod Approval</h4>
+                            <p class="text-sm text-slate-500">Waiting for Go-No-Go decision.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-red-500"></div>
+                            <h4 class="font-bold text-slate-800">Migrate Prod</h4>
+                            <p class="text-sm text-slate-500">Deployment to production.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-green-700"></div>
+                            <h4 class="font-bold text-green-700 text-xl">Done</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Lifecycle of Dev Tickets which do not need QA -->
+        <section class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-emerald-600 pl-3">Lifecycle of Dev Tickets (No QA Required)</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">A streamlined flow for technical tasks or fixes that bypass the testing pipeline.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <div class="relative max-w-lg mx-auto">
+                    <div class="flow-connector border-emerald-300"></div>
+                    <div class="space-y-6">
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending Dev</h4>
+                            <p class="text-sm text-slate-500">Ticket is ready and waiting for a developer to start work.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">Dev in Progress</h4>
+                            <p class="text-sm text-slate-500">Developer is actively working on the technical task.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">PR in Review</h4>
+                            <p class="text-sm text-slate-500">Code is submitted for peer review.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">PR approved</h4>
+                            <p class="text-sm text-slate-500">Code review complete and approved for merging.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-emerald-500"></div>
+                            <h4 class="font-bold text-slate-800">In Dev env</h4>
+                            <p class="text-sm text-slate-500">Code deployed to development environment for verification.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-green-700"></div>
+                            <h4 class="font-bold text-green-700 text-xl">Done</h4>
+                            <p class="text-sm text-green-600">Task completed and closed directly after dev verification.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Lifecycle of UX Design Tickets -->
+        <section class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-pink-600 pl-3">Lifecycle of UX Design Tickets</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">A focused flow for standalone user experience and interface design tasks.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <div class="relative max-w-lg mx-auto">
+                    <div class="flow-connector border-pink-300"></div>
+                    <div class="space-y-6">
+                        <div class="flow-step">
+                            <div class="flow-dot bg-pink-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending UX Design</h4>
+                            <p class="text-sm text-slate-500">Design request is in the backlog, waiting for resource assignment.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-pink-500"></div>
+                            <h4 class="font-bold text-slate-800">In UX Design</h4>
+                            <p class="text-sm text-slate-500">Designers are actively creating mockups, wireframes, and prototypes.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-pink-500"></div>
+                            <h4 class="font-bold text-slate-800">Pending UX Approval</h4>
+                            <p class="text-sm text-slate-500">Final designs are submitted for stakeholder review and sign-off.</p>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-green-700"></div>
+                            <h4 class="font-bold text-green-700 text-xl">Done</h4>
+                            <p class="text-sm text-green-600">Designs approved and moved to handover or project folder.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Creating a Defect -->
+        <section class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-amber-600 pl-3">Creating a Defect</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">Standardized process for internal reporting.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <div class="space-y-6">
+                    <div class="bug-step">
+                        <div class="bug-icon">1</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Use the Defect Report Template</h4>
+                             <p class="text-sm text-slate-500">Ensure context and reproduction steps are included.</p>
+                        </div>
+                    </div>
+                    <div class="bug-step">
+                        <div class="bug-icon">2</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Add to Related Project</h4>
+                            <p class="text-sm text-slate-500">Link the ticket to the relevant product/service board.</p>
+                        </div>
+                    </div>
+                    <div class="bug-step">
+                        <div class="bug-icon">3</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Apply Necessary Labels</h4>
+                            <div class="space-y-4 mt-2">
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Type (Fixed)</h5>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-red-600 text-white font-bold">defect</span>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Test Environment (select one)</h5>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">dev</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">qa</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">stage</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-800">prod</span>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Defect Source (select one)</h5>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800">qa test</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-pink-100 text-pink-800">design test</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">BV</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">dev test</span>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Root Cause (select one)</h5>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-800">error</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">design fallacy</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">product decision</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800">improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Creating a Customer Bug -->
+        <section class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 border-l-4 border-red-600 pl-3">Creating a Customer Bug</h3>
+                    <p class="text-sm text-slate-500 mt-1 pl-4">Standardized process for bugs originating from customer reports.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-xl">
+                <div class="space-y-6">
+                    <div class="bug-step">
+                        <div class="bug-icon">1</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Use the Bug Report Template</h4>
+                            <p class="text-sm text-slate-500">Ensure customer context and reproduction steps are included.</p>
+                        </div>
+                    </div>
+                    <div class="bug-step">
+                        <div class="bug-icon">2</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Add to Related Project</h4>
+                            <p class="text-sm text-slate-500">Link the ticket to the relevant product/service board.</p>
+                        </div>
+                    </div>
+                    <div class="bug-step">
+                        <div class="bug-icon">3</div>
+                        <div class="bug-content">
+                            <h4 class="font-bold text-slate-800">Apply Necessary Labels</h4>
+                            <div class="space-y-4 mt-2">
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Type (Fixed)</h5>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-red-600 text-white font-bold">bug</span>
+                                </div>
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Test Environment (Fixed)</h5>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-bold uppercase">prod</span>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Bug Source (Fixed)</h5>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 font-bold">customer</span>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <h5 class="font-semibold text-slate-700 mb-1">label: Root Cause (select one)</h5>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-800">error</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">design fallacy</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">product decision</span>
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800">improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
+            
+        </div>
+    </footer>
+
+</body>
+</html>
