@@ -47,10 +47,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            /*width: 100%;/* Adjusts based on width of children */ */
-            width: fit-content;
-            min-width: 200px;
-            max-width: 520px;
+            width: 100%;/* Adjusts based on width of children */ 
             height: 2px;
             background-color: #CBD5E1;
         }
@@ -61,7 +58,7 @@
         /* Individual child wrapper to create vertical lines up to the horizontal bar */
         .tree-child-wrapper {
             position: relative;
-            padding: 0 10px; 
+            padding: 0 2px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -413,6 +410,11 @@
                             <h4 class="font-bold text-slate-800">Pending BV - Stage</h4> <h2 class="font-bold text-slate-600">Story , Parent Full task, Defects & Bugs will go in this status. No Sub-task will go here.</h2>
                             <p class="text-sm text-slate-500">QA passed; Deployed to the staging environment for business validation.</p>
                         </div>
+                        <div class="flow-step">
+                            <div class="flow-dot bg-yellow-500"></div>
+                            <h4 class="font-bold text-slate-800">In BV - Stage</h4> <h2 class="font-bold text-slate-600">Story , Parent Full task, Defects & Bugs will go in this status. No Sub-task will go here.</h2>
+                            <p class="text-sm text-slate-500">Ongoing business validation.</p>
+                        </div>
                         <div class="flow-step relative">
                             <div class="flow-dot"></div>
                             <div class="grid grid-cols-2 gap-2 text-sm font-medium">
@@ -535,11 +537,11 @@
             </div>
 
             <div class="bg-white p-6 rounded-lg shadow-xl">
-                <div class="space-y-6">
+                <div class="space-y-6 max-w-2xl mx-auto">
                     <div class="bug-step">
                         <div class="bug-icon">1</div>
                         <div class="bug-content">
-                            <h4 class="font-bold text-slate-800">Use the Defect Report Template</h4>
+                            <h4 class="font-bold text-slate-800">Use the Defect Report Template (Initial status - Pending Dev)</h4>
                              <p class="text-sm text-slate-500">Ensure context and reproduction steps are included.</p>
                         </div>
                     </div>
@@ -603,11 +605,11 @@
             </div>
 
             <div class="bg-white p-6 rounded-lg shadow-xl">
-                <div class="space-y-6">
+                <div class="space-y-6 max-w-2xl mx-auto">
                     <div class="bug-step">
                         <div class="bug-icon">1</div>
                         <div class="bug-content">
-                            <h4 class="font-bold text-slate-800">Use the Bug Report Template</h4>
+                            <h4 class="font-bold text-slate-800">Use the Bug Report Template (Initial status - Pending Dev)</h4>
                             <p class="text-sm text-slate-500">Ensure customer context and reproduction steps are included.</p>
                         </div>
                     </div>
